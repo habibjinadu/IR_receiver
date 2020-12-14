@@ -94,7 +94,9 @@ void display_message()
         
         Disp2Hex32(message);
         
-        
+        message = 0;
+        TMR_hi_duration = 0; // Set lo duration back to 0
+        TMR_lo_duration = 0; // Set hi duration back to 0
 
 }
 

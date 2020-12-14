@@ -51,6 +51,7 @@ int main(void) {
     {
         
         decode_IR();
+        
 //        if (counter == 2)// If a IR signal was detected
 //        {
 //            LATBbits.LATB8 = 1;
