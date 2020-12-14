@@ -42,7 +42,30 @@ void decode_IR()
     else if (decode_bit == 0 && message_bit_position == 0)
     {
         message_bit_position = 32; // reset message_bit_index to 11
-        Disp2Hex32(message); // display message to UART
+        if (message == 0xE0E040BF)
+        {
+            //XmitUART2('A',10);
+            Disp2String("\r\nTV ON/Off command received");
+        }
+        else if (message == 0xE0E048B7)
+        {
+            Disp2String("\r\nChannel mode: Channel up received");
+        }
+        else if (message == 0xE0E008F7)
+        {
+            Disp2String("\r\nChannel mode: Channel down received");
+        }
+        else if (message == 0xE0E0E01F)
+        {
+            Disp2String("\r\nVolume mode: Volume up received");
+        }
+        else if (message == 0xE0E0D02F)
+        {
+            Disp2String("\r\nVolume mode: Volume down received");
+        }
+        
+        
+        Disp2Hex32(message);
         
         message = 0;
         TMR_hi_duration = 0; // Set lo duration back to 0
