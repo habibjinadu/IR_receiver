@@ -127,7 +127,7 @@ void measure_pulse_width()
         TMR2 = 0; // Set TMR2 to 0
         T2CONbits.TON = 1; // Start timer
         
-        if ((start_duration > 3000) && (start_duration < 18000)) // if start duration is within 18000 cycles (4.5ms)
+        if ((start_duration > 1000) && (start_duration < 18000)) // if start duration is within 18000 cycles (4.5ms)
         {
             ready_2 = 1; // start 2nd half start bit verification.
             //ready_2 = 0; // initial message received.
