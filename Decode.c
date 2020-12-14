@@ -26,11 +26,17 @@ void decode_IR()
     if (CN_interrupt_flag == 1)
     {
         measure_pulse_width();
+        CN_interrupt_flag = 0; // Set the interrupt flag back to 0.
     }
     
     if (T2_interrupt_flag == 1)
     {
         start = 0; // Stop looking for a signal.
+        ready_1 = 0;// set ready_1 to 0
+        ready_2 = 0;// set ready_2 to 0
+        message = 0;
+        TMR_hi_duration = 0; // Set lo duration back to 0
+        TMR_lo_duration = 0; // Set hi duration back to 0
         T2_interrupt_flag = 0; // set T2_interrupt flag back to 0;
     }
     
@@ -55,12 +61,7 @@ void decode_IR()
         LATBbits.LATB8 = 1;
 
     }
-    else if (start == 0)
-    {
-        //message = determine_bit(TMR_hi_duration, TMR_lo_duration);
-        LATBbits.LATB8 = 0;
-        //Disp2Dec(start_duration);
-    }        
+       
  
 }
 
@@ -170,7 +171,7 @@ void measure_pulse_width()
         decode_bit = 1; // set the decode_bit flag to 1
     }
     
-    CN_interrupt_flag = 0; // Set the interrupt flag back to 0.
+    
 }
 
 // Updates the message with the detected bit.

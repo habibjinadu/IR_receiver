@@ -120,11 +120,11 @@ section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0x87c           0xcba  (3258)
 .const                       0xa7c                0xae           0x105  (261)
-.text                        0xb2a               0x580           0x840  (2112)
-.dinit                      0x10aa                0x24            0x36  (54)
-.text                       0x10ce                0x24            0x36  (54)
+.text                        0xb2a               0x582           0x843  (2115)
+.dinit                      0x10ac                0x24            0x36  (54)
+.text                       0x10d0                0x24            0x36  (54)
 
-                 Total "program" memory used (bytes):         0x166b  (5739) 35%
+                 Total "program" memory used (bytes):         0x166e  (5742) 35%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x600]
@@ -225,33 +225,33 @@ External Symbols in Program Memory (by address):
                   0x000a3a                  __fcompare
                   0x000a70                  _strlen
                   0x000b2a                  _decode_IR
-                  0x000b86                  _display_message
-                  0x000c00                  _measure_pulse_width
-                  0x000cec                  _update_message
-                  0x000d1e                  _determine_bit
-                  0x000d74                  _InitUART2
-                  0x000ddc                  _XmitUART2
-                  0x000e14                  _Disp2Hex
-                  0x000e72                  _Disp2Hex32
-                  0x000ee0                  _Disp2Dec
-                  0x000f40                  _Disp2String
-                  0x000f62                  _IOinit
-                  0x000fe6                  _NewClk
-                  0x00105a                  _do_ADC
-                  0x001078                  _make_bar_graph
-                  0x0010ce                  _delay_us
-                  0x0010e2                  _main
+                  0x000b8a                  _display_message
+                  0x000c04                  _measure_pulse_width
+                  0x000cee                  _update_message
+                  0x000d20                  _determine_bit
+                  0x000d76                  _InitUART2
+                  0x000dde                  _XmitUART2
+                  0x000e16                  _Disp2Hex
+                  0x000e74                  _Disp2Hex32
+                  0x000ee2                  _Disp2Dec
+                  0x000f42                  _Disp2String
+                  0x000f64                  _IOinit
+                  0x000fe8                  _NewClk
+                  0x00105c                  _do_ADC
+                  0x00107a                  _make_bar_graph
+                  0x0010d0                  _delay_us
+                  0x0010e4                  _main
 
 External Symbols in Program Memory (by name):
 
-                  0x000ee0                  _Disp2Dec
-                  0x000e14                  _Disp2Hex
-                  0x000e72                  _Disp2Hex32
-                  0x000f40                  _Disp2String
-                  0x000f62                  _IOinit
-                  0x000d74                  _InitUART2
-                  0x000fe6                  _NewClk
-                  0x000ddc                  _XmitUART2
+                  0x000ee2                  _Disp2Dec
+                  0x000e16                  _Disp2Hex
+                  0x000e74                  _Disp2Hex32
+                  0x000f42                  _Disp2String
+                  0x000f64                  _IOinit
+                  0x000d76                  _InitUART2
+                  0x000fe8                  _NewClk
+                  0x000dde                  _XmitUART2
                   0x0002c8                  __CNInterrupt
                   0x0002fa                  __DefaultInterrupt
                   0x0002d8                  __T2Interrupt
@@ -286,19 +286,19 @@ External Symbols in Program Memory (by name):
                   0x00023c                  __psv_init
                   0x000200                  __resetPRI
                   0x000b2a                  _decode_IR
-                  0x0010ce                  _delay_us
-                  0x000d1e                  _determine_bit
-                  0x000b86                  _display_message
-                  0x00105a                  _do_ADC
+                  0x0010d0                  _delay_us
+                  0x000d20                  _determine_bit
+                  0x000b8a                  _display_message
+                  0x00105c                  _do_ADC
                   0x000706                  _expf
                   0x0008e0                  _ldexpf
                   0x000924                  _logf
-                  0x0010e2                  _main
-                  0x001078                  _make_bar_graph
-                  0x000c00                  _measure_pulse_width
+                  0x0010e4                  _main
+                  0x00107a                  _make_bar_graph
+                  0x000c04                  _measure_pulse_width
                   0x00046a                  _powf
                   0x000a70                  _strlen
-                  0x000cec                  _update_message
+                  0x000cee                  _update_message
 
 Memory Configuration
 
@@ -498,15 +498,15 @@ __FDS
  .debug_abbrev    0x0004e2         0xed build/default/production/ADC.o
  .debug_abbrev    0x0005cf        0x114 build/default/production/UART2.o
 
-.debug_line       0x000000        0x893
+.debug_line       0x000000        0x896
  *(.debug_line)
  .debug_line      0x000000        0x113 build/default/production/TimeDelay.o
  .debug_line      0x000113        0x110 build/default/production/main.o
  .debug_line      0x000223        0x12b build/default/production/IOs.o
  .debug_line      0x00034e        0x11b build/default/production/ChangeClk.o
- .debug_line      0x000469        0x18f build/default/production/Decode.o
- .debug_line      0x0005f8        0x118 build/default/production/ADC.o
- .debug_line      0x000710        0x183 build/default/production/UART2.o
+ .debug_line      0x000469        0x192 build/default/production/Decode.o
+ .debug_line      0x0005fb        0x118 build/default/production/ADC.o
+ .debug_line      0x000713        0x183 build/default/production/UART2.o
 
 .debug_frame      0x000000        0x2ca
  *(.debug_frame)
@@ -1117,33 +1117,33 @@ __c30_signature
 .const              0x8a7c         0xae load address 0x000a7c  
  .const             0x8a7c         0xae build/default/production/Decode.o
 
-.text             0x000b2a        0x580
- .text            0x000b2a        0x24a build/default/production/Decode.o
+.text             0x000b2a        0x582
+ .text            0x000b2a        0x24c build/default/production/Decode.o
                   0x000b2a                  _decode_IR
-                  0x000b86                  _display_message
-                  0x000c00                  _measure_pulse_width
-                  0x000cec                  _update_message
-                  0x000d1e                  _determine_bit
- .text            0x000d74        0x1ee build/default/production/UART2.o
-                  0x000d74                  _InitUART2
-                  0x000ddc                  _XmitUART2
-                  0x000e14                  _Disp2Hex
-                  0x000e72                  _Disp2Hex32
-                  0x000ee0                  _Disp2Dec
-                  0x000f40                  _Disp2String
- .text            0x000f62         0x84 build/default/production/IOs.o
-                  0x000f62                  _IOinit
- .text            0x000fe6         0x74 build/default/production/ChangeClk.o
-                  0x000fe6                  _NewClk
- .text            0x00105a         0x50 build/default/production/ADC.o
-                  0x00105a                  _do_ADC
-                  0x001078                  _make_bar_graph
+                  0x000b8a                  _display_message
+                  0x000c04                  _measure_pulse_width
+                  0x000cee                  _update_message
+                  0x000d20                  _determine_bit
+ .text            0x000d76        0x1ee build/default/production/UART2.o
+                  0x000d76                  _InitUART2
+                  0x000dde                  _XmitUART2
+                  0x000e16                  _Disp2Hex
+                  0x000e74                  _Disp2Hex32
+                  0x000ee2                  _Disp2Dec
+                  0x000f42                  _Disp2String
+ .text            0x000f64         0x84 build/default/production/IOs.o
+                  0x000f64                  _IOinit
+ .text            0x000fe8         0x74 build/default/production/ChangeClk.o
+                  0x000fe8                  _NewClk
+ .text            0x00105c         0x50 build/default/production/ADC.o
+                  0x00105c                  _do_ADC
+                  0x00107a                  _make_bar_graph
 
-.dinit            0x0010aa         0x24
- .dinit           0x0010aa         0x24 data_init
+.dinit            0x0010ac         0x24
+ .dinit           0x0010ac         0x24 data_init
 
-.text             0x0010ce         0x24
- .text            0x0010ce         0x14 build/default/production/TimeDelay.o
-                  0x0010ce                  _delay_us
- .text            0x0010e2         0x10 build/default/production/main.o
-                  0x0010e2                  _main
+.text             0x0010d0         0x24
+ .text            0x0010d0         0x14 build/default/production/TimeDelay.o
+                  0x0010d0                  _delay_us
+ .text            0x0010e4         0x10 build/default/production/main.o
+                  0x0010e4                  _main
