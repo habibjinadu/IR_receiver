@@ -11,6 +11,9 @@ extern "C" {
 #endif /* __cplusplus */
 
 void decode_IR();
+void display_message();
+void measure_pulse_width();
+void update_message();
 uint32_t determine_bit (uint16_t hi_cycles, uint16_t lo_cycles);
 
 #ifdef	__cplusplus

@@ -19,28 +19,35 @@ uint32_t message = 0; //keeps track of the IR message
 uint16_t message_bit_position = 32; // 12 for sony, 32 for samsung
 uint16_t decode_bit =  0; // decode flag
 uint16_t start_duration = 0; // Keeps track of the start duration
-
+uint16_t CN_interrupt_flag = 0; // Keeps track of the CN interrupt trigger
+uint16_t T2_interrupt_flag = 0; // Keeps track of the T2 interrupt trigger
 void decode_IR()
 {  
+    if (CN_interrupt_flag == 1)
+    {
+        measure_pulse_width();
+    }
+    
+    if (T2_interrupt_flag == 1)
+    {
+        start = 0; // Stop looking for a signal.
+        T2_interrupt_flag = 0; // set T2_interrupt flag back to 0;
+    }
+    
     if (start == 0 && ready_1 == 0 && ready_2 == 0)
     {
         LATBbits.LATB8 = 0;
         Idle();
     } 
     else if (decode_bit == 1 && message_bit_position >= 0)
-    {   
-        //newClk(8);
-        //Idle();
-        //message |= determine_bit(TMR_hi_duration, TMR_lo_duration) << message_bit_position;
-        message_bit_position -= 1; // decrease the index by 1
-        message |= determine_bit(TMR_hi_duration, TMR_lo_duration) << message_bit_position; 
-        decode_bit = 0; //set decode_bit back to 0
-        
-        
+    {       
+        update_message();
     }
     else if (decode_bit == 0 && message_bit_position == 0)
     {
-        display_message();
+        
+        display_message(); // Display message & hex code to the PC
+        
     }
     else if (start == 1)
     {
@@ -57,9 +64,11 @@ void decode_IR()
  
 }
 
+// Displays a message to the PC
 void display_message()
 {
-    message_bit_position = 32; // reset message_bit_index to 32
+        message_bit_position = 32; // reset message_bit_index to 32
+        
         if (message == 0xE0E040BF)
         {
             //XmitUART2('A',10);
@@ -85,26 +94,16 @@ void display_message()
         
         Disp2Hex32(message);
         
-        message = 0; // clear message variable
-        TMR_hi_duration = 0; // Set lo duration back to 0
-        TMR_lo_duration = 0; // Set hi duration back to 0
+        
 
 }
-uint32_t determine_bit (uint16_t hi_cycles, uint16_t lo_cycles) 
+
+// Starts measuring the pulse duration
+void measure_pulse_width()
 {
-    if ((hi_cycles > 6460) && (hi_cycles < 7060) && (lo_cycles > 1940) && (lo_cycles < 2540)) // if hi time is 2240 cycles (560us) and lo time is 6760 cycles (1690us)
-        return 1;
-    else if ((hi_cycles > 1940) && (hi_cycles < 2540) && (lo_cycles > 1940) && (lo_cycles < 2540)) // if hi time is 2240 cycles (560us) and lo time is 2240 cycles (560us)
-        return 0;
-    else
-        return 0;
-}
-
-
-
-void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void){
     
-   if(PORTBbits.RB2 == 0 && start == 0 && ready_1 == 0 && ready_2 == 0)// If the IR receiver is lo and pin_state == 1
+    
+    if(PORTBbits.RB2 == 0 && start == 0 && ready_1 == 0 && ready_2 == 0)// If the IR receiver is lo and pin_state == 1
     {   
         PR2 = TMR2_time_out_duration; // set PR2 to the time_out_duration      
         ready_1 = 1; // begin the flag sequence
@@ -168,6 +167,33 @@ void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void){
         T2CONbits.TON = 1; // Start timer
         decode_bit = 1; // set the decode_bit flag to 1
     }
+    
+    CN_interrupt_flag = 0; // Set the interrupt flag back to 0.
+}
+
+// Updates the message with the detected bit.
+void update_message()
+{
+    message_bit_position -= 1; // decrease the index by 1
+    message |= determine_bit(TMR_hi_duration, TMR_lo_duration) << message_bit_position; // Set the bit in message specified by message_bit_position
+    decode_bit = 0; //set decode_bit back to 0
+}
+// Determine whether the pulse represents a 1 bit, or 0 bit
+uint32_t determine_bit (uint16_t hi_cycles, uint16_t lo_cycles) 
+{
+    if ((hi_cycles > 6460) && (hi_cycles < 7060) && (lo_cycles > 1940) && (lo_cycles < 2540)) // if hi time is 2240 cycles (560us) and lo time is 6760 cycles (1690us)
+        return 1;
+    else if ((hi_cycles > 1940) && (hi_cycles < 2540) && (lo_cycles > 1940) && (lo_cycles < 2540)) // if hi time is 2240 cycles (560us) and lo time is 2240 cycles (560us)
+        return 0;
+    else
+        return 0;
+}
+
+
+// The is the CN interrupt which is called when a CN pin has changed value.
+void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void){
+    
+    CN_interrupt_flag = 1; // Set the interrupt flag to 1.
 
      IFS1bits.CNIF = 0; // clear the CN interrupt flag bit.
 }
@@ -175,9 +201,8 @@ void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void){
 //This is the timer2 interrupt which is called when the TMR2 counter has reached 
 // the value in PR2
 void __attribute__((interrupt, no_auto_psv)) _T2Interrupt(void){
-
-    start = 0; // stop decoding
     
+    T2_interrupt_flag = 1; // set T2 interrupt flag to 1
 
     T2CONbits.TON = 0;//Turns off the timer
 
