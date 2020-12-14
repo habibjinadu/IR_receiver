@@ -24,11 +24,12 @@ uint16_t decode_IR_counter = 0;
 
 void decode_IR()
 {  
-
-    
-    
-    
-    if (decode_bit == 1 && message_bit_position >= 0)
+    if (start == 0 && ready_1 == 0 && ready_2 == 0)
+    {
+        LATBbits.LATB8 = 0;
+        Idle();
+    } 
+    else if (decode_bit == 1 && message_bit_position >= 0)
     {   
         //newClk(8);
         //Idle();
