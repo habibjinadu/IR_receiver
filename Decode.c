@@ -13,14 +13,12 @@ uint16_t start = 0; // start is 1 when a start signal has been detected, 0 when 
 uint16_t TMR_hi_duration = 0; // To keep track of the hi time
 uint16_t TMR_lo_duration = 0; // To keep track of the lo time
 uint16_t TMR2_time_out_duration = 20000; //signal time_out duration for decoding 20000 cycles(5ms for Samsung TVs)
-uint16_t ready_1 = 0; // variable to keep track of an initial low voltage
-uint16_t ready_2 = 0; // variable to keep track of an initial high voltage
+uint16_t ready_1 = 0; // variable to keep track of the correct low input duration in the start bit
+uint16_t ready_2 = 0; // variable to keep track of the correct hi input duration in the start bit
 uint32_t message = 0; //keeps track of the IR message
 uint16_t message_bit_position = 32; // 12 for sony, 32 for samsung
 uint16_t decode_bit =  0; // decode flag
 uint16_t start_duration = 0; // Keeps track of the start duration
-uint16_t CN_interrupt_counter = 0;
-uint16_t decode_IR_counter = 0;
 
 void decode_IR()
 {  
@@ -42,7 +40,26 @@ void decode_IR()
     }
     else if (decode_bit == 0 && message_bit_position == 0)
     {
-        message_bit_position = 32; // reset message_bit_index to 11
+        display_message();
+    }
+    else if (start == 1)
+    {
+
+        LATBbits.LATB8 = 1;
+
+    }
+    else if (start == 0)
+    {
+        //message = determine_bit(TMR_hi_duration, TMR_lo_duration);
+        LATBbits.LATB8 = 0;
+        //Disp2Dec(start_duration);
+    }        
+ 
+}
+
+void display_message()
+{
+    message_bit_position = 32; // reset message_bit_index to 32
         if (message == 0xE0E040BF)
         {
             //XmitUART2('A',10);
@@ -68,26 +85,11 @@ void decode_IR()
         
         Disp2Hex32(message);
         
-        message = 0;
+        message = 0; // clear message variable
         TMR_hi_duration = 0; // Set lo duration back to 0
         TMR_lo_duration = 0; // Set hi duration back to 0
 
-    }
-    else if (start == 1)
-    {
-
-        LATBbits.LATB8 = 1;
-
-    }
-    else if (start == 0)
-    {
-        //message = determine_bit(TMR_hi_duration, TMR_lo_duration);
-        LATBbits.LATB8 = 0;
-        //Disp2Dec(start_duration);
-    }        
- 
 }
-
 uint32_t determine_bit (uint16_t hi_cycles, uint16_t lo_cycles) 
 {
     if ((hi_cycles > 6460) && (hi_cycles < 7060) && (lo_cycles > 1940) && (lo_cycles < 2540)) // if hi time is 2240 cycles (560us) and lo time is 6760 cycles (1690us)
@@ -97,6 +99,7 @@ uint32_t determine_bit (uint16_t hi_cycles, uint16_t lo_cycles)
     else
         return 0;
 }
+
 
 
 void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void){
