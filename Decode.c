@@ -34,7 +34,8 @@ void decode_IR()
         start = 0; // Stop looking for a signal.
         ready_1 = 0;// set ready_1 to 0
         ready_2 = 0;// set ready_2 to 0
-        message = 0;
+        message = 0; // Set message back to 0
+        message_bit_position = 32; // reset message_bit_index to 32
         TMR_hi_duration = 0; // Set lo duration back to 0
         TMR_lo_duration = 0; // Set hi duration back to 0
         T2_interrupt_flag = 0; // set T2_interrupt flag back to 0;
