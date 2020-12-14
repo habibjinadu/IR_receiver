@@ -56,10 +56,10 @@ int main(void) {
 //        {
 //            LATBbits.LATB8 = 1;
 //        }
-    //NewClk(32);
-    //LATBbits.LATB8 = ~PORTBbits.RB8;
-    //NewClk(8);
-    //LATBbits.LATB8 = ~PORTBbits.RB8;
+//    NewClk(32);
+//    LATBbits.LATB8 = ~PORTBbits.RB8;
+//    NewClk(8);
+//    LATBbits.LATB8 = ~PORTBbits.RB8;
     //__delay32(40); //Delay for 10 microseconds
     //delay_us(10); // Delay for 10 microseconds
     

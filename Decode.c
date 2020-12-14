@@ -45,7 +45,9 @@ void decode_IR()
     if (start == 0 && ready_1 == 0 && ready_2 == 0)
     {
         LATBbits.LATB8 = 0;
+        NewClk(32);
         Idle();
+        NewClk(8);
     } 
     else if (decode_bit == 1 && message_bit_position >= 0)
     {       
@@ -124,7 +126,7 @@ void measure_pulse_width()
         TMR2 = 0; // Set TMR2 to 0
         T2CONbits.TON = 1; // Start timer
         
-        if ((start_duration > 17000) && (start_duration < 19000)) // if start duration is within 18000 cycles (4.5ms)
+        if ((start_duration > 200) && (start_duration < 18000)) // if start duration is within 18000 cycles (4.5ms)
         {
             ready_2 = 1; // start 2nd half start bit verification.
             //ready_2 = 0; // initial message received.
