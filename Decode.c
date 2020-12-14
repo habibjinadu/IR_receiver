@@ -39,6 +39,7 @@ void decode_IR()
         TMR_hi_duration = 0; // Set lo duration back to 0
         TMR_lo_duration = 0; // Set hi duration back to 0
         T2_interrupt_flag = 0; // set T2_interrupt flag back to 0;
+        
     }
     
     if (start == 0 && ready_1 == 0 && ready_2 == 0)
