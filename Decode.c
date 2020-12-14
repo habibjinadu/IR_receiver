@@ -16,7 +16,7 @@ uint16_t TMR2_time_out_duration = 20000; //signal time_out duration for decoding
 uint16_t ready_1 = 0; // variable to keep track of the correct low input duration in the start bit
 uint16_t ready_2 = 0; // variable to keep track of the correct hi input duration in the start bit
 uint32_t message = 0; //keeps track of the IR message
-uint16_t message_bit_position = 32; // 12 for sony, 32 for samsung
+uint16_t message_bit_position = 32; // 32 for samsung
 uint16_t decode_bit =  0; // decode flag
 uint16_t start_duration = 0; // Keeps track of the start duration
 uint16_t CN_interrupt_flag = 0; // Keeps track of the CN interrupt trigger
@@ -38,6 +38,7 @@ void decode_IR()
         message_bit_position = 32; // reset message_bit_index to 32
         TMR_hi_duration = 0; // Set lo duration back to 0
         TMR_lo_duration = 0; // Set hi duration back to 0
+        decode_bit = 0; // Set decode_bit back to 0
         T2_interrupt_flag = 0; // set T2_interrupt flag back to 0;
         
     }
@@ -65,14 +66,13 @@ void decode_IR()
         LATBbits.LATB8 = 1;
 
     }
-       
  
 }
 
 // Displays a message to the PC
 void display_message()
 {
-        message_bit_position = 32; // reset message_bit_index to 32
+        
         
         if (message == 0xE0E040BF)
         {
@@ -99,7 +99,8 @@ void display_message()
         
         Disp2Hex32(message);
         
-        message = 0;
+        message_bit_position = 32; // reset message_bit_index to 32
+        message = 0; // clear message
         TMR_hi_duration = 0; // Set lo duration back to 0
         TMR_lo_duration = 0; // Set hi duration back to 0
 
@@ -126,7 +127,7 @@ void measure_pulse_width()
         TMR2 = 0; // Set TMR2 to 0
         T2CONbits.TON = 1; // Start timer
         
-        if ((start_duration > 200) && (start_duration < 18000)) // if start duration is within 18000 cycles (4.5ms)
+        if ((start_duration > 3000) && (start_duration < 18000)) // if start duration is within 18000 cycles (4.5ms)
         {
             ready_2 = 1; // start 2nd half start bit verification.
             //ready_2 = 0; // initial message received.
@@ -134,7 +135,7 @@ void measure_pulse_width()
         else
         {
             ready_2 = 0; // stop decoding
-            //ready_2 = 0; // incorrect initial signal, set ready back to 0
+            ready_1 = 0; // incorrect initial signal, set ready_1 back to 0
         }
     }
    else if (PORTBbits.RB2 == 0 && start == 0 && ready_1 == 1 && ready_2 == 1)
