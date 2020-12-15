@@ -3,6 +3,9 @@
  * Author: adeso
  *
  * Created on December 10, 2020, 6:11 PM
+ * 
+ * Inputs: GPIO6-RB2 - IR LED
+ * Outputs: GPIO12-RB8 - RED  LED
  */
 
 
@@ -22,7 +25,7 @@
 #include "IOs.h"
 #include "ChangeClk.h"
 #include "UART2.h"
-#include "Decode.h"
+#include "IR.h"
 
 //Preprocessor directives - Configuration bits for MCU start up
 #pragma config FCKSM = CSECMD // Clock switching is enabled, clock monitor disabled
@@ -41,7 +44,7 @@ uint16_t counter = 0;
 int main(void) {
     
     // Change Clock
-    NewClk(8); // 8 for 8 MHz; 500 for 500 kHz; 32 for 32 kHz
+    NewClk(32); // 32 for 32 kHz; 500 for 500 kHz; 32 for 32 kHz
      
     // Initialize IOs for low-power wake-up
     AD1PCFG = 0xFFFF; // Turn all analog pins as digital
@@ -49,29 +52,7 @@ int main(void) {
      
     while(1)
     {
-        
-        decode_IR();
-        
-//        if (counter == 2)// If a IR signal was detected
-//        {
-//            LATBbits.LATB8 = 1;
-//        }
-//    NewClk(32);
-//    LATBbits.LATB8 = ~PORTBbits.RB8;
-//    NewClk(8);
-//    LATBbits.LATB8 = ~PORTBbits.RB8;
-    //__delay32(40); //Delay for 10 microseconds
-    //delay_us(10); // Delay for 10 microseconds
-    
-    //TMR2 = 0; 
-    //LATBbits.LATB8 = ~PORTBbits.RB8;
-    //PR2 = 60000;
-    //T2CONbits.TON = 1;
-    
-    //do_ADC();
-    //T2CONbits.TON = 0;
-    //Disp2Dec(TMR2,1);
-    //XmitUART2(13,1);
+        decode_IR();  // decode_IR decodes any IR signal.  
     }
     return 0;
 }

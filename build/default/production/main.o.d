@@ -3,4 +3,4 @@ main.c  \
 IOs.h  \
 ChangeClk.h  \
 UART2.h  \
- Decode.h 
+IR.h 
