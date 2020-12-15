@@ -47,7 +47,7 @@ void decode_IR()
         
     }
     
-    if (start == 0)
+    if (start == 0 && ready_1 == 0 && ready_2 == 0)
     {
         LATBbits.LATB8 = 0;
         NewClk(32); // change clock to 32kHz
