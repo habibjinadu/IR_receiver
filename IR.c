@@ -49,7 +49,7 @@ void decode_IR()
     
     if (start == 0 && ready_1 == 0 && ready_2 == 0)
     {
-        LATBbits.LATB8 = 0;
+        LATBbits.LATB8 = 0; //Led lo
         NewClk(32); // change clock to 32kHz
         Idle();
         NewClk(8); // change clock to 8Mhz
@@ -144,7 +144,7 @@ void measure_pulse_width()
     }
    else if (PORTBbits.RB2 == 0 && start == 0 && ready_1 == 1 && ready_2 == 1)
    {
-       start_duration = TMR2;
+       start_duration = TMR2; // store the 2nd half of the in start_duration
        T2CONbits.TON = 0; // Stop timer
        TMR2 = 0; // Set TMR2 to 0
        T2CONbits.TON = 1; // Start timer
@@ -218,8 +218,8 @@ void __attribute__((interrupt, no_auto_psv)) _T2Interrupt(void){
 
     T2CONbits.TON = 0;//Turns off the timer
 
-    //Clears the timer interrupt flag
-    IFS0bits.T2IF = 0;
+    
+    IFS0bits.T2IF = 0; //Clears the timer interrupt flag
         
         
 }
